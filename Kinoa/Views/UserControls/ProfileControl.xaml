@@ -1,0 +1,914 @@
+﻿<UserControl x:Class="Kinoa.Views.UserControls.ProfileControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:bh="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+             xmlns:local="clr-namespace:Kinoa.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="760" d:DesignWidth="900" FontFamily="Corbel" Background="#0F0E0E">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Background="#212529">
+            <ListBox Background="Transparent" 
+                     BorderBrush="{x:Null}" 
+                     BorderThickness="0"
+                     Foreground="#B4A5A5"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     x:Name="select">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                <Condition Property="Selector.IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="#343a40"/>
+                                            <Setter Property="Border.BorderBrush" TargetName="Bd" Value="#343a40"/>
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                <Condition Property="Selector.IsSelected" Value="True"/>
+                                            </MultiTrigger.Conditions>
+                                            <Setter Property="Panel.Background" TargetName="Bd" Value="#343a40"/>
+                                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                <Setter.Value>
+                                                    <SolidColorBrush>#343a40</SolidColorBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiTrigger>
+                                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                            <Setter Property="Panel.Background" TargetName="Bd" 
+                       Value="#495057"/>
+                                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                <Setter.Value>
+                                                    <SolidColorBrush>#495057</SolidColorBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <bh:Interaction.Triggers>
+                    <bh:EventTrigger EventName="SelectionChanged">
+                        <bh:InvokeCommandAction Command="{Binding ChangeCommand}"  CommandParameter="{Binding ElementName=select, Path=SelectedItem}"/>
+                    </bh:EventTrigger>
+                </bh:Interaction.Triggers>
+                <ListBoxItem Cursor="Hand" Name="main" IsSelected="True">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <Image Source="/Views/Images/user.png" 
+                               Cursor="Hand"
+                               Width="25" 
+                               Margin="0,0,20,0"
+                               Height="25">
+                        </Image>
+                        <TextBlock  Foreground="#DDD" 
+                                    FontSize="22"
+                                    VerticalAlignment="Center" Text="Профиль"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <ListBoxItem Cursor="Hand" Name="orders">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <Image Source="/Views/Images/tickets.png" 
+                               Margin="0,0,20,0"
+                               Cursor="Hand"
+                               Width="25" 
+                               Height="25">
+                        </Image>
+                        <TextBlock  Foreground="#DDD" 
+                                    FontSize="22"
+                                    VerticalAlignment="Center" Text="Заказы"/>
+                    </StackPanel>
+                </ListBoxItem>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Column="1" Visibility="{Binding Path=Select, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+                <TextBlock  Foreground="#DDD" 
+                            FontSize="24"
+                            Grid.Row="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="Профиль"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1">
+                <Border Width="60" Height="60" Cursor="Hand" BorderThickness="0" CornerRadius="50">
+                    <Border.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <Trigger Property="Border.IsMouseOver" Value="True">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                Storyboard.TargetProperty="Width"
+                To="70" Duration="0:0:0.250"/>
+                                                <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="70" Duration="0:0:0.250"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation
+                Storyboard.TargetProperty="Width"
+                To="60" Duration="0:0:0.150"/>
+                                                <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="60" Duration="0:0:0.150"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <Ellipse>
+                        <Ellipse.Fill>
+                            <ImageBrush Stretch="UniformToFill"  ImageSource="{Binding Path=Profile.Image, NotifyOnValidationError=True,ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></ImageBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding ChangePicCommand}"/>
+                    </Border.InputBindings>
+                </Border>
+                <TextBlock Foreground="#DDD" 
+                       FontSize="18"
+                       VerticalAlignment="Center"
+                       Margin="10,0,5,0"
+                       Text="{Binding Path=Profile.FirstName}"/>
+                <TextBlock Foreground="#DDD" 
+                       FontSize="18"
+                       VerticalAlignment="Center"
+                       Text="{Binding Path=Profile.LastName}"/>
+            </StackPanel>
+            <Border Grid.Row="2" Margin="40" Background="#212529" HorizontalAlignment="Center" VerticalAlignment="Top" CornerRadius="10">
+                <StackPanel Orientation="Vertical" Margin="20,40">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                        <Label Content="Имя:" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#ced4da" FontSize="18" Width="100"></Label>
+                        <TextBox Style="{StaticResource DefaultTextBox}" CaretBrush="#EEE" MaxLength="16" 
+                                 Text="{Binding Path=Profile.FirstName, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150">
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate>
+                                    <StackPanel>
+                                        <AdornedElementPlaceholder x:Name="textBox" />
+                                        <ItemsControl ItemsSource="{Binding}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ErrorContent}" Foreground="#83142C" FontSize="12" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </Validation.ErrorTemplate>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                        <Label Content="Фамилия:" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#ced4da" FontSize="18" Width="100"></Label>
+                        <TextBox Style="{StaticResource DefaultTextBox}" CaretBrush="#EEE" MaxLength="16" 
+                                 Text="{Binding Path=Profile.LastName, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150">
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate>
+                                    <StackPanel>
+                                        <AdornedElementPlaceholder x:Name="textBox" />
+                                        <ItemsControl ItemsSource="{Binding}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ErrorContent}" Foreground="#83142C" FontSize="12" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </Validation.ErrorTemplate>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                        <Label Content="Email:" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#ced4da" FontSize="18" Width="100"></Label>
+                        <TextBox Style="{StaticResource DefaultTextBox}" CaretBrush="#EEE" MaxLength="64" 
+                                 Text="{Binding Path=Profile.Email, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="150">
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate>
+                                    <StackPanel>
+                                        <AdornedElementPlaceholder x:Name="textBox" />
+                                        <ItemsControl ItemsSource="{Binding}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding ErrorContent}" Foreground="#83142C" FontSize="12" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </Validation.ErrorTemplate>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                        <Label Content="Login:" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#ced4da" FontSize="18" Width="100"></Label>
+                        <TextBlock Foreground="#DDD" 
+                                FontSize="16"
+                                VerticalAlignment="Center" Text="{Binding Path=Profile.Login}" Width="150"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="15" 
+                                Visibility="{Binding Path=Method, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image Source="/Views/Images/credit-card.png" 
+                               HorizontalAlignment="Left" 
+                               VerticalAlignment="Center"
+                               Width="30" 
+                               Height="30">
+                        </Image>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Foreground="#e9ecef" 
+                                   FontSize="16"
+                                   VerticalAlignment="Center" Text="{Binding Path=Profile.CardNumber, Converter={StaticResource CardConverter}}" 
+                                   Width="150"
+                                   Margin="15,0,0,0"></TextBlock>
+                            <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
+                                <TextBlock Foreground="#6c757d" 
+                                   FontSize="14"
+                                   VerticalAlignment="Center" Text="{Binding Path=Profile.Month, StringFormat='{}{0} / '}">
+                                </TextBlock>
+                                <TextBlock Foreground="#6c757d" 
+                                   FontSize="14"
+                                   VerticalAlignment="Center" Text="{Binding Path=Profile.Year}">
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                        <Image Source="/Views/Images/clear.png" 
+                               Cursor="Hand"
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Center"
+                               Width="15" 
+                               Height="15"
+                               Margin="50,0,0,0">
+                            <Image.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding Path=DeleteCardCommand}"/>
+                            </Image.InputBindings>
+                        </Image>
+                    </StackPanel>
+                    <Button Style="{StaticResource DefaultButton}"
+                            Width="100"
+                            Height="30"
+                            Margin="0,10,0,0"
+                            Background="#2ec4b6"
+                            Foreground="#f8f9fa"
+                            Content="Обновить"
+                            FontSize="14"
+                            Command="{Binding Path=UpdateProfileCommand}">
+                    </Button>
+                </StackPanel>
+            </Border>
+            <Button Style="{StaticResource DefaultButton}"
+                    Width="150"
+                    Height="40"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Center"
+                    Grid.Row="3"
+                    Background="#212529"
+                    Foreground="#e9ecef"
+                    Content="Выйти"
+                    FontSize="18"
+                    Command="{Binding Path=LogOutCommand}">
+            </Button>
+
+        </Grid>
+        <TabControl Grid.Column="1" Background="Transparent" BorderBrush="{x:Null}" Visibility="{Binding Path=Select, Converter={StaticResource BooleanToVisibilityConverterBack}}" Margin="20">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Foreground" Value="#171010"/>
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="0" CornerRadius="10,10,0,0" BorderBrush="{x:Null}">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"
+                                        Cursor="Hand"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#E8EAF6" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Foreground" Value="#171010"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="Foreground" Value="#393E46"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="Активные заказы">
+                <Grid>
+                    <ListBox Background="Transparent" 
+                     BorderBrush="{x:Null}" 
+                     BorderThickness="0"
+                     Foreground="#B4A5A5"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     x:Name="ordersList"
+                     ItemsSource="{Binding Path=ActiveOrders, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding Path=SelectedOrder, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                                                <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                        <Condition Property="Selector.IsSelected" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="#343a40"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd" Value="#343a40"/>
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                        <Condition Property="Selector.IsSelected" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.Background" TargetName="Bd" Value="#343a40"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#343a40</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiTrigger>
+                                                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                    <Setter Property="Panel.Background" TargetName="Bd" 
+                       Value="#495057"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#495057</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.2*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#495057" BorderThickness="0,0,0,1">
+                                        <TextBlock Text="{Binding Path=OrderId, StringFormat='Номер заказа {0}'}"
+                                       Foreground="#FAFAFA"
+                                       FontSize="20"
+                                       Margin="0,10,0,5"/>
+                                    </Border>
+
+                                    <Grid Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0.2*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="0.2*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Orientation="Vertical" Grid.Row="0">
+                                            <TextBlock Text="{Binding Path=MovieSession.Movie.Name}"
+                                               FontSize="20"
+                                               Foreground="#7209b7"
+                                               Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Path=MovieSession.SessionDate, Converter={StaticResource DateConverter}, StringFormat='Дата сеанса: {0}'}"
+                                               FontSize="16"
+                                               Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Path=MovieSession.SessionStartTime, Converter={StaticResource TimeConverter}, StringFormat='Начало в: {0}'}"
+                                               FontSize="16"/>
+                                        </StackPanel>
+                                        <ListBox    Background="Transparent" 
+                                            Grid.Row="1" 
+                                            BorderBrush="{x:Null}" 
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            x:Name="seats"
+                                            ItemsSource="{Binding Path=Data}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                                                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <MultiTrigger>
+                                                                        <MultiTrigger.Conditions>
+                                                                            <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                                        </MultiTrigger.Conditions>
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd" Value="Transparent"/>
+                                                                    </MultiTrigger>
+                                                                    <MultiTrigger>
+                                                                        <MultiTrigger.Conditions>
+                                                                            <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                                        </MultiTrigger.Conditions>
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush>Transparent</SolidColorBrush>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </MultiTrigger>
+                                                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                       Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush>Transparent</SolidColorBrush>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                                        <TextBlock Margin="0,0,20,0" Foreground="#EEE" FontSize="14" Text="{Binding Path=RowNumber, StringFormat='Ряд: {0}'}"/>
+                                                        <TextBlock Foreground="#EEE" FontSize="14" Text="{Binding Path=SeatNumber, StringFormat='Место: {0}'}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <TextBlock Grid.Row="2" Text="{Binding Path=Sum, StringFormat='Сумма заказа: {0}BYN'}"/>
+                                    </Grid>
+                                    <Button Style="{StaticResource ClearButton}"
+                                    Width="120"
+                                    Height="30"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    VerticalAlignment="Center"
+                                    Grid.Column="1"
+                                    Margin="50,0,0,0"
+                                    Content="Вернуть билеты"
+                                    FontSize="14"
+                                    Command="{Binding Path=DataContext.CancelOrderCommand, ElementName=ordersList}"
+                                    CommandParameter="{Binding}">
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Завершенные заказы">
+                <Grid>
+                    <ListBox Background="Transparent" 
+                     BorderBrush="{x:Null}" 
+                     BorderThickness="0"
+                     Foreground="#B4A5A5"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     x:Name="ordersLastList"
+                     ItemsSource="{Binding Path=CompletedOrders, UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                                                <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                        <Condition Property="Selector.IsSelected" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="#343a40"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd" Value="#343a40"/>
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                        <Condition Property="Selector.IsSelected" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.Background" TargetName="Bd" Value="#343a40"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#343a40</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiTrigger>
+                                                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                    <Setter Property="Panel.Background" TargetName="Bd" 
+                       Value="#495057"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#495057</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.2*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#495057" BorderThickness="0,0,0,1">
+                                        <TextBlock Text="{Binding Path=OrderId, StringFormat='Номер заказа {0}'}"
+                                       Foreground="#FAFAFA"
+                                       FontSize="20"
+                                       Margin="0,10,0,5"/>
+                                    </Border>
+
+                                    <Grid Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0.2*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="0.2*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Orientation="Vertical" Grid.Row="0">
+                                            <TextBlock Text="{Binding Path=MovieSession.Movie.Name}"
+                                               FontSize="20"
+                                               Foreground="#7209b7"
+                                               Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Path=MovieSession.SessionDate, Converter={StaticResource DateConverter}, StringFormat='Дата сеанса: {0}'}"
+                                               FontSize="16"
+                                               Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Path=MovieSession.SessionStartTime, Converter={StaticResource TimeConverter}, StringFormat='Начало в: {0}'}"
+                                               FontSize="16"/>
+                                        </StackPanel>
+                                        <ListBox    Background="Transparent" 
+                                            Grid.Row="1" 
+                                            BorderBrush="{x:Null}" 
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            x:Name="seats"
+                                            ItemsSource="{Binding Path=Data}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                                                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <MultiTrigger>
+                                                                        <MultiTrigger.Conditions>
+                                                                            <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                                        </MultiTrigger.Conditions>
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd" Value="Transparent"/>
+                                                                    </MultiTrigger>
+                                                                    <MultiTrigger>
+                                                                        <MultiTrigger.Conditions>
+                                                                            <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                                        </MultiTrigger.Conditions>
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush>Transparent</SolidColorBrush>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </MultiTrigger>
+                                                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                       Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush>Transparent</SolidColorBrush>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                                        <TextBlock Margin="0,0,20,0" Foreground="#EEE" FontSize="14" Text="{Binding Path=RowNumber, StringFormat='Ряд: {0}'}"/>
+                                                        <TextBlock Foreground="#EEE" FontSize="14" Text="{Binding Path=SeatNumber, StringFormat='Место: {0}'}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <TextBlock Grid.Row="2" Text="{Binding Path=Sum, StringFormat='Сумма заказа: {0}BYN'}"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Отмененные заказы">
+                <Grid>
+                    <ListBox Background="Transparent" 
+                     BorderBrush="{x:Null}" 
+                     BorderThickness="0"
+                     Foreground="#B4A5A5"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Top"
+                     x:Name="ordersCanceldList"
+                     ItemsSource="{Binding Path=CancelledOrders, UpdateSourceTrigger=PropertyChanged}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                                                <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                        <Condition Property="Selector.IsSelected" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="#343a40"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd" Value="#343a40"/>
+                                                </MultiTrigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                        <Condition Property="Selector.IsSelected" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.Background" TargetName="Bd" Value="#343a40"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#343a40</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiTrigger>
+                                                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                    <Setter Property="Panel.Background" TargetName="Bd" 
+                       Value="#495057"/>
+                                                    <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#495057</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.2*"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Row="0" Grid.Column="0" BorderBrush="#495057" BorderThickness="0,0,0,1">
+                                        <TextBlock Text="{Binding Path=OrderId, StringFormat='Номер заказа {0}'}"
+                                       Foreground="#FAFAFA"
+                                       FontSize="20"
+                                       Margin="0,10,0,5"/>
+                                    </Border>
+
+                                    <Grid Grid.Row="1" Grid.Column="0" Margin="0,10,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="0.2*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="0.2*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Orientation="Vertical" Grid.Row="0">
+                                            <TextBlock Text="{Binding Path=MovieSession.Movie.Name}"
+                                               FontSize="20"
+                                               Foreground="#7209b7"
+                                               Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Path=MovieSession.SessionDate, Converter={StaticResource DateConverter}, StringFormat='Дата сеанса: {0}'}"
+                                               FontSize="16"
+                                               Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Path=MovieSession.SessionStartTime, Converter={StaticResource TimeConverter}, StringFormat='Начало в: {0}'}"
+                                               FontSize="16"/>
+                                        </StackPanel>
+                                        <ListBox    Background="Transparent" 
+                                            Grid.Row="1" 
+                                            BorderBrush="{x:Null}" 
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            x:Name="seats"
+                                            ItemsSource="{Binding Path=Data}">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="ListBoxItem">
+                                                                <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                                                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                                                </Border>
+                                                                <ControlTemplate.Triggers>
+                                                                    <MultiTrigger>
+                                                                        <MultiTrigger.Conditions>
+                                                                            <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                                        </MultiTrigger.Conditions>
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd" Value="Transparent"/>
+                                                                    </MultiTrigger>
+                                                                    <MultiTrigger>
+                                                                        <MultiTrigger.Conditions>
+                                                                            <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                                        </MultiTrigger.Conditions>
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush>Transparent</SolidColorBrush>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </MultiTrigger>
+                                                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                       Value="Transparent"/>
+                                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                                            <Setter.Value>
+                                                                                <SolidColorBrush>Transparent</SolidColorBrush>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal" Margin="5">
+                                                        <TextBlock Margin="0,0,20,0" Foreground="#EEE" FontSize="14" Text="{Binding Path=RowNumber, StringFormat='Ряд: {0}'}"/>
+                                                        <TextBlock Foreground="#EEE" FontSize="14" Text="{Binding Path=SeatNumber, StringFormat='Место: {0}'}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <TextBlock Grid.Row="2" Text="{Binding Path=Sum, StringFormat='Сумма заказа: {0}BYN'}"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

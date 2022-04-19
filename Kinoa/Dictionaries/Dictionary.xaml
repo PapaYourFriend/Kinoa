@@ -1,0 +1,181 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--textBox-->
+    <Style TargetType="{x:Type TextBox}" x:Key="DefaultTextBox">
+        <Setter Property="Width" Value="200"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="Corbel"/>
+        <Setter Property="Foreground" Value="#EEE"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border x:Name="Border" BorderThickness="0,0,0,1" Background="Transparent" BorderBrush="#B42B51">
+                        <ScrollViewer x:Name="PART_ContentHost"/>
+                    </Border>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--passwordBox-->
+    <Style TargetType="{x:Type PasswordBox}" x:Key="DefaultPassword">
+        <Setter Property="Width" Value="200"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="Corbel"/>
+        <Setter Property="Foreground" Value="#EEE"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type PasswordBox}">
+                    <Border x:Name="Border" BorderThickness="0,0,0,1" Background="Transparent" BorderBrush="#B42B51">
+                        <ScrollViewer x:Name="PART_ContentHost" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--button-->
+    <Style TargetType="Button" x:Key="DefaultButton">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontFamily" Value="Corbel"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="brdr" TextBlock.Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness" Duration="0:0:0.2" From="0" To="2"/>
+                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" Duration="0:0:0.1" From="{x:Null}" To="#EEE"></ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ThicknessAnimation Storyboard.TargetProperty="BorderThickness" Duration="0:0:0.4" From="2" To="0"/>
+                            <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" Duration="0:0:0.3" From="#EEE" To="{x:Null}"></ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="Button" x:Key="ClearButton">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontFamily" Value="Corbel"/>
+        <Setter Property="BorderBrush" Value="#DA0037"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="#FAFAFA"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="brdr" TextBlock.Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                            Duration="0:0:0.2"
+                                            From="{x:Null}"
+                                            To="#DA0037">
+                            </ColorAnimation>
+                            <ColorAnimation Storyboard.TargetProperty="Foreground.Color"
+                                            Duration="0:0:0.2"
+                                            From="#FAFAFA"
+                                            To="#212121">
+                            </ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                            Duration="0:0:0.4"
+                                            From="#DA0037"
+                                            To="{x:Null}">
+                            </ColorAnimation>
+                            <ColorAnimation Storyboard.TargetProperty="Foreground.Color"
+                                            Duration="0:0:0.4" 
+                                            From="#212121"
+                                            To="#FAFAFA">
+                            </ColorAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <!--image-->
+    <Style TargetType="Image" x:Key="SizeChanging">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                Storyboard.TargetProperty="Width"
+                To="30" Duration="0:0:0.250"/>
+                            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="30" Duration="0:0:0.250"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                Storyboard.TargetProperty="Width"
+                To="25" Duration="0:0:0.150"/>
+                            <DoubleAnimation
+                Storyboard.TargetProperty="Height"
+                To="25" Duration="0:0:0.150"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!--repeat button-->
+    <Style TargetType="RepeatButton" x:Key="RepeatTemplate">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{x:Null}"/>
+        <Setter Property="ClickMode" Value="Hover"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RepeatButton">
+                    <Border Name="border" 
+                        BorderThickness="0"
+                        BorderBrush="{x:Null}" 
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

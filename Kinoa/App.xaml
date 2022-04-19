@@ -1,0 +1,42 @@
+﻿<Application x:Class="Kinoa.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Kinoa"
+             xmlns:vm="clr-namespace:Kinoa.ViewModel"
+             xmlns:v="clr-namespace:Kinoa.Views.UserControls"
+             xmlns:cnv="clr-namespace:Kinoa.ViewModel.Converters"
+             >
+    <Application.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type vm:MainControlViewModel}">
+                <v:MainControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CreateOrderViewModel}">
+                <v:CreateOrderControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:FilmRoomViewModel}">
+                <v:FilmRoomControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:CellViewModel}">
+                <v:CellControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:ProfileViewModel}">
+                <v:ProfileControl/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:BigRoomViewModel}">
+                <v:BigRoomControl/>
+            </DataTemplate>
+            <cnv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <cnv:BooleanToVisibilityConverterBack x:Key="BooleanToVisibilityConverterBack"/>
+            <cnv:DateConverter x:Key="DateConverter"/>
+            <cnv:TimeConverter x:Key="TimeConverter"/>
+            <cnv:CardConverter x:Key="CardConverter"/>
+            <cnv:DayOfWeekConverter x:Key="DayOfWeekConverter"/>
+            <cnv:DayConverter x:Key="DayConverter"/>
+            <cnv:MonthConverter x:Key="MonthConverter"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionaries/Dictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

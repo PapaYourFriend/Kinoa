@@ -1,0 +1,212 @@
+﻿<Window x:Class="Kinoa.Views.Windows.AuthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kinoa.Views.Windows"
+        xmlns:common="clr-namespace:Kinoa.ViewModel.Common"
+        xmlns:bh="clr-namespace:Microsoft.Xaml.Behaviors;assembly=Microsoft.Xaml.Behaviors"
+        mc:Ignorable="d"
+        Title="Kinoa" Height="650" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" WindowStyle="SingleBorderWindow" FontFamily="Corbel">
+    <Border Background="#212121">
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/Views/Images/pexels-rodolfo.jpg" Stretch="UniformToFill" AlignmentX="Left" Opacity="0.2">
+                    <ImageBrush.RelativeTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1.2"></ScaleTransform>
+                        </TransformGroup>
+                    </ImageBrush.RelativeTransform>
+                </ImageBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="0.05*"></RowDefinition>
+            </Grid.RowDefinitions>
+            
+            <Grid Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="400" Height="450" Background="#202020">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="35" ShadowDepth="10" Color="#C62A88" Opacity="0.3"></DropShadowEffect>
+                </Grid.Effect>
+                <TabControl Background="Transparent" BorderBrush="{x:Null}">
+                    <TabControl.Resources>
+                        <Style TargetType="TabItem">
+                            <Setter Property="Foreground" Value="#171010"/>
+                            <Setter Property="FontSize" Value="18"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="TabItem">
+                                        <Border Name="Border" BorderThickness="0" CornerRadius="10,10,0,0" BorderBrush="{x:Null}">
+                                            <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"
+                                        Cursor="Hand"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Border" Property="Background" Value="#E8EAF6" />
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="False">
+                                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Foreground" Value="#171010"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="False">
+                                    <Setter Property="Foreground" Value="#393E46"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TabControl.Resources>
+                    <TabItem Header="Логин">
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center">
+                            <Image Source="/Views/Images/logo.png" Width="100" Height="100" Margin="0,40,0,20"></Image>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,40,10">
+                                <Label Content="Логин:" Foreground="#BBB" VerticalAlignment="Bottom" FontSize="18" Width="75"></Label>
+                                <TextBox Style="{StaticResource DefaultTextBox}" 
+                                         Text="{Binding Path=Login.Login, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         CaretBrush="#EEE"
+                                         MaxLength="16">
+                                    <Validation.ErrorTemplate>
+                                        <ControlTemplate>
+                                            <StackPanel>
+                                                <AdornedElementPlaceholder x:Name="textBox" />
+                                                <ItemsControl ItemsSource="{Binding}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding ErrorContent}" Foreground="#83142C" FontSize="12" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </ControlTemplate>
+                                    </Validation.ErrorTemplate>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,40,10">
+                                <Label Content="Пароль:" Foreground="#BBB" VerticalAlignment="Bottom" FontSize="18" Width="75"></Label>
+                                <PasswordBox CaretBrush="#EEE" Style="{StaticResource DefaultPassword}" x:Name="passwordLogin" MaxLength="18">
+                                    <bh:Interaction.Behaviors>
+                                        <common:PasswordBehavior Password="{Binding Path=Login.Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
+                                    </bh:Interaction.Behaviors>
+                                </PasswordBox>
+                            </StackPanel>
+                            <Button Style="{StaticResource DefaultButton}"
+                                    Width="150"
+                                    Height="40"
+                                    Margin="0,50,0,0"
+                                    Background="#DA0037"
+                                    Foreground="#EDEDED"
+                                    Content="Войти"
+                                    FontSize="18"
+                                    Command="{Binding Path=LoginCommand}">
+                                
+                            </Button>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Регистрация">
+                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center">
+                            <Image Source="/Views/Images/logo.png" Width="70" Height="70" Margin="0,20,0,10"></Image>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,40,10">
+                                <Label Content="Имя:" Foreground="#BBB" VerticalAlignment="Bottom" FontSize="18" Width="75"></Label>
+                                <TextBox Style="{StaticResource DefaultTextBox}" CaretBrush="#EEE"
+                                         Text="{Binding Path=Register.Name, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         MaxLength="16">
+                                    <Validation.ErrorTemplate>
+                                        <ControlTemplate>
+                                            <StackPanel>
+                                                <AdornedElementPlaceholder x:Name="textBox" />
+                                                <ItemsControl ItemsSource="{Binding}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding ErrorContent}" Foreground="#83142C" FontSize="12" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </ControlTemplate>
+                                    </Validation.ErrorTemplate>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,40,10">
+                                <Label Content="Email:" Foreground="#BBB" VerticalAlignment="Bottom" FontSize="18" Width="75"></Label>
+                                <TextBox Style="{StaticResource DefaultTextBox}" CaretBrush="#EEE"
+                                         Text="{Binding Path=Register.Email, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         MaxLength="64">
+                                    <Validation.ErrorTemplate>
+                                        <ControlTemplate>
+                                            <StackPanel>
+                                                <AdornedElementPlaceholder x:Name="textBox" />
+                                                <ItemsControl ItemsSource="{Binding}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding ErrorContent}" Foreground="#83142C" FontSize="12" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </ControlTemplate>
+                                    </Validation.ErrorTemplate>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,40,10">
+                                <Label Content="Логин:" Foreground="#BBB" VerticalAlignment="Bottom" FontSize="18" Width="75"></Label>
+                                <TextBox Style="{StaticResource DefaultTextBox}" CaretBrush="#EEE"
+                                         Text="{Binding Path=Register.Login, ValidatesOnExceptions=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         MaxLength="16">
+                                    <Validation.ErrorTemplate>
+                                        <ControlTemplate>
+                                            <StackPanel>
+                                                <AdornedElementPlaceholder x:Name="textBox" />
+                                                <ItemsControl ItemsSource="{Binding}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Text="{Binding ErrorContent}" Foreground="#83142C" FontSize="12" />
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </ControlTemplate>
+                                    </Validation.ErrorTemplate>
+                                </TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,10,40,10">
+                                <Label Content="Пароль:" Foreground="#BBB" VerticalAlignment="Bottom" FontSize="18" Width="75"></Label>
+                                <PasswordBox CaretBrush="#EEE" Style="{StaticResource DefaultPassword}" x:Name="passwordRegister" MaxLength="18">
+                                    <bh:Interaction.Behaviors>
+                                        <common:PasswordBehavior Password="{Binding Path=Register.Password, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True, Mode=TwoWay}"/>
+                                    </bh:Interaction.Behaviors>
+                                </PasswordBox>
+                            </StackPanel>
+                            <Button Style="{StaticResource DefaultButton}"
+                                    Width="150"
+                                    Height="40"
+                                    Margin="0,20,0,0"
+                                    Background="#F39422"
+                                    Foreground="#212121"
+                                    Content="Регистрация"
+                                    FontSize="14"
+                                    Command="{Binding Path=RegisterCommand}">
+
+                            </Button>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+            
+            <TextBlock Text="@photo by Rodolfo Clix" Foreground="#BBB"
+                       Grid.Row="1" 
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,20,0">
+            </TextBlock>
+        </Grid>
+    </Border>
+</Window>

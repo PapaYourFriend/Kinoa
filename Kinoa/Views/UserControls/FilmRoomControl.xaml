@@ -1,0 +1,628 @@
+﻿<UserControl x:Class="Kinoa.Views.UserControls.FilmRoomControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kinoa.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="760" d:DesignWidth="900" FontFamily="Corbel" Background="#001219">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ListBoxTemplate" TargetType="{x:Type ListBox}">
+            <DockPanel>
+                <RepeatButton x:Name="LineLeftButton" DockPanel.Dock="Left"
+                              Style="{StaticResource RepeatTemplate}"
+                              Content="&lt;"      
+                              Opacity="0"
+                              Command="{x:Static ScrollBar.LineLeftCommand}"      
+                              CommandTarget="{Binding ElementName=scrollviewer}"
+                              Visibility="Collapsed"/>
+                <RepeatButton x:Name="LineRightButton" DockPanel.Dock="Right"
+                              Style="{StaticResource RepeatTemplate}"
+                              Content="&gt;" 
+                              Opacity="0"
+                              Command="{x:Static ScrollBar.LineRightCommand}"      
+                              CommandTarget="{Binding ElementName=scrollviewer}"
+                              Visibility="Collapsed"/>
+                <Border BorderThickness="0" BorderBrush="{x:Null}" Background="Transparent">
+                    <ScrollViewer x:Name="scrollviewer">
+                        <ScrollViewer.Template>
+                            <ControlTemplate TargetType="{x:Type ScrollViewer}" >
+                                <Grid>
+                                    <ScrollBar x:Name="PART_HorizontalScrollBar" Orientation="Horizontal" 
+                    Value="{TemplateBinding HorizontalOffset}"
+                    Maximum="{TemplateBinding ScrollableWidth}"
+                    ViewportSize="{TemplateBinding ViewportWidth}"
+                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}">
+                                        <ScrollBar.Template>
+                                            <ControlTemplate>
+                                            </ControlTemplate>
+                                        </ScrollBar.Template>
+                                    </ScrollBar>
+                                    <ScrollContentPresenter Height="Auto" 
+			VerticalAlignment="Center"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </ScrollViewer.Template>
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </Border>
+            </DockPanel>
+            <ControlTemplate.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="ComputedHorizontalScrollBarVisibility" 
+		SourceName="scrollviewer" Value="Visible"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter TargetName="LineLeftButton" Property="Visibility" Value="Visible" />
+                        <Setter TargetName="LineRightButton" Property="Visibility" Value="Visible" />
+                    </MultiTrigger.Setters>
+                    <MultiTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="LineLeftButton" 
+                    Storyboard.TargetProperty="Opacity" To="0.8" Duration="0:0:0.25"/>
+                                <DoubleAnimation Storyboard.TargetName="LineRightButton" 
+                    Storyboard.TargetProperty="Opacity" To="0.8" Duration="0:0:0.25"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.EnterActions>
+                    <MultiTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="LineLeftButton" 
+                    Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25"/>
+                                <DoubleAnimation Storyboard.TargetName="LineRightButton" 
+                    Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </MultiTrigger.ExitActions>
+                </MultiTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.Column="0" Grid.Row="0" BorderBrush="#102030" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.Background>
+                    <ImageBrush ImageSource="{Binding Path=Showing.Image, UpdateSourceTrigger=PropertyChanged}" 
+                            Stretch="UniformToFill" 
+                            AlignmentY="Top"
+                            Opacity="0.8"/>
+                </Grid.Background>
+                <Image Style="{StaticResource SizeChanging}" 
+                   Source="/Views/Images/back-button.png" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Top"
+                   Margin="20,50,0,0" 
+                   Width="25" 
+                   Height="25">
+                    <Image.InputBindings>
+                        <MouseBinding Command="{Binding Path=BackCommand}"
+                                      MouseAction="LeftClick"/>
+                    </Image.InputBindings>
+                </Image>
+            </Grid>
+        </Border>
+        
+        <Border Grid.Column="0" Grid.Row="1" Background="#001219" BorderBrush="#102030" BorderThickness="0,0,1,0">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="30"
+                                  Direction="90"
+                                  Color="#102030"
+                                  Opacity="0.9"
+                                  BlurRadius="20" />
+            </Border.Effect>
+            <Grid>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0">
+                    <TextBlock Foreground="#f8f9fa" 
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Text="{Binding Path=Showing.Name}"
+                               TextWrapping="Wrap"
+                               Margin="0,5">
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Foreground="#9E9E9E"
+                                   FontSize="16"
+                                   Text="{Binding Path=Showing.StartDate, StringFormat='{}{0} | ', Converter={StaticResource DateConverter}}">
+                        </TextBlock>
+                        <TextBlock Foreground="#9E9E9E"
+                                   FontSize="16"
+                                   Text="{Binding Path=Showing.Genre.GenreName}">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10">
+                        <Image Width="15" Height="15"
+                               Margin="0,0,5,0"
+                               Source="/Views/Images/star.png" 
+                               ToolTip="Rating"
+                               VerticalAlignment="Center">
+                        </Image>
+                        <TextBlock Foreground="#9E9E9E" FontSize="16" Text="{Binding Path=Showing.Rating}" VerticalAlignment="Center"></TextBlock>
+                    </StackPanel>
+                    <TextBlock Foreground="#9E9E9E" 
+                               FontSize="14" 
+                               Text="{Binding Path=Showing.Description}"
+                               VerticalAlignment="Top"
+                               TextWrapping="Wrap"
+                               Width="300">
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="1.5*"></RowDefinition>
+                <RowDefinition Height="0.3*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" BorderBrush="#102030" BorderThickness="0,0,0,1">
+                <TextBlock Foreground="#DDD" 
+                       FontSize="24"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"
+                       Margin="20,0,0,0"
+                       Text="Купить билеты">
+                </TextBlock>
+            </Border>
+            <Border Grid.Row="1" BorderBrush="#102030" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1.5*"></RowDefinition>
+                        <RowDefinition Height="1.5*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <TextBlock Foreground="#9E9E9E" 
+                                   FontSize="14"
+                                   Margin="20,0,0,0"
+                                   Text="Выберите зал">
+                        </TextBlock>
+                        <ListBox x:Name="rooms" 
+                                 VirtualizingPanel.ScrollUnit="Pixel" 
+                                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                 Template="{StaticResource ListBoxTemplate}"
+                                 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                 HorizontalAlignment="Center" 
+                                 Background="Transparent"
+                                 VerticalAlignment="Center" 
+                                 VerticalContentAlignment="Center"
+                                 HorizontalContentAlignment="Center"
+                                 BorderBrush="{x:Null}" 
+                                 SelectedItem="{Binding Path=SelectedRoom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 ItemsSource="{Binding Path=FilmRooms}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border BorderThickness="2"
+                                                        Padding="{TemplateBinding Control.Padding}"
+                                                        CornerRadius="5"
+                                                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                                        Background="#184e77"
+                                                        Name="Bd"
+                                                        Margin="10"
+                                                          SnapsToDevicePixels="True">
+                                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="#2d6a4f"/>
+                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush>#74c69d</SolidColorBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Panel.Background" TargetName="Bd" Value="#2d6a4f"/>
+                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush>#74c69d</SolidColorBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiTrigger>
+                                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.250" To="0.8" Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.150" To="1" Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                    <Trigger Property="UIElement.IsEnabled" Value="False">
+                                                        <Setter Property="TextElement.Foreground" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <DynamicResource ResourceKey="{x:Static SystemColors.GrayTextBrushKey}" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="220" MinHeight="100" Cursor="Hand" Background="Transparent">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0">
+                                            <Image Width="30" Height="30"
+                                                   Source="/Views/Images/cinema.png" 
+                                                   ToolTip="Dolby"
+                                                   HorizontalAlignment="Left">
+                                            </Image>
+                                            <TextBlock Foreground="#dee2e6" 
+                                                       FontSize="16"
+                                                       Margin="0,10,0,5"
+                                                       Text="{Binding Path=FilmRoomName}">
+                                            </TextBlock>
+                                            <TextBlock Foreground="#9E9E9E" 
+                                                       FontSize="14"
+                                                       Text="{Binding Path=Capacity, StringFormat='{}{0} seats'}">
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <TextBlock Foreground="#9E9E9E" 
+                                   FontSize="14"
+                                   Margin="20,0,0,0"
+                                   Text="Выберите дату">
+                        </TextBlock>
+                        <ListBox x:Name="dates" 
+                                 VirtualizingPanel.ScrollUnit="Pixel" 
+                                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                 Template="{StaticResource ListBoxTemplate}"
+                                 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                 HorizontalAlignment="Center" 
+                                 Background="Transparent"
+                                 VerticalAlignment="Center" 
+                                 VerticalContentAlignment="Center"
+                                 HorizontalContentAlignment="Center"
+                                 BorderBrush="{x:Null}" 
+                                 SelectedItem="{Binding Path=SelectedDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 ItemsSource="{Binding Path=Dates}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border BorderThickness="2"
+                                                        Padding="{TemplateBinding Control.Padding}"
+                                                        CornerRadius="5"
+                                                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                                        Background="#184e77"
+                                                        Name="Bd"
+                                                        Margin="10"
+                                                          SnapsToDevicePixels="True">
+                                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="#2d6a4f"/>
+                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush>#74c69d</SolidColorBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Panel.Background" TargetName="Bd" Value="#2d6a4f"/>
+                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush>#74c69d</SolidColorBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiTrigger>
+                                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.250" To="0.8" Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.150" To="1" Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                    <Trigger Property="UIElement.IsEnabled" Value="False">
+                                                        <Setter Property="TextElement.Foreground" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <DynamicResource ResourceKey="{x:Static SystemColors.GrayTextBrushKey}" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="75" Height="95" Cursor="Hand" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Transparent">
+                                        <TextBlock Foreground="#9E9E9E" 
+                                                   FontSize="16"
+                                                   Margin="10,10,0,0"
+                                                   FontWeight="Bold"
+                                                   Text="{Binding Path=Date, Converter={StaticResource DayOfWeekConverter}}">
+                                        </TextBlock>
+                                        <TextBlock Foreground="#dee2e6" 
+                                                   FontSize="18"
+                                                   FontWeight="Bold"
+                                                   Margin="10,10,0,0"
+                                                   Text="{Binding Path=Date, Converter={StaticResource DayConverter}}">
+                                        </TextBlock>
+                                        <TextBlock Foreground="#9E9E9E" 
+                                                   FontSize="14"
+                                                   Margin="10,0,0,0"
+                                                   Text="{Binding Path=Date, Converter={StaticResource MonthConverter}}">
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <TextBlock Foreground="#9E9E9E" 
+                                   FontSize="14"
+                                   Margin="20,0,0,0"
+                                   Text="Время сеанса">
+                        </TextBlock>
+                        <ListBox x:Name="times" 
+                                 VirtualizingPanel.ScrollUnit="Pixel" 
+                                 ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+                                 Template="{StaticResource ListBoxTemplate}"
+                                 ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                                 HorizontalAlignment="Center" 
+                                 Background="Transparent"
+                                 VerticalAlignment="Center" 
+                                 VerticalContentAlignment="Center"
+                                 HorizontalContentAlignment="Center"
+                                 BorderBrush="{x:Null}" 
+                                 SelectedItem="{Binding Path=SelectedSession, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 ItemsSource="{Binding Path=SessionTimes}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListBoxItem">
+                                                <Border BorderThickness="2"
+                                                        Padding="{TemplateBinding Control.Padding}"
+                                                        CornerRadius="20"
+                                                        BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                                        Background="#184e77"
+                                                        Name="Bd"
+                                                        Margin="10"
+                                                          SnapsToDevicePixels="True">
+                                                    <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Panel.Background" TargetName="Bd" 
+                        Value="#2d6a4f"/>
+                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush>#74c69d</SolidColorBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiTrigger>
+                                                    <MultiTrigger>
+                                                        <MultiTrigger.Conditions>
+                                                            <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                            <Condition Property="Selector.IsSelected" Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="Panel.Background" TargetName="Bd" Value="#2d6a4f"/>
+                                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <SolidColorBrush>#74c69d</SolidColorBrush>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </MultiTrigger>
+                                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.250" To="0.8" Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="0:0:0.150" To="1" Storyboard.TargetProperty="Opacity" />
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                    <Trigger Property="UIElement.IsEnabled" Value="False">
+                                                        <Setter Property="TextElement.Foreground" TargetName="Bd">
+                                                            <Setter.Value>
+                                                                <DynamicResource ResourceKey="{x:Static SystemColors.GrayTextBrushKey}" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Cursor="Hand" Orientation="Vertical" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent">
+                                        <TextBlock Foreground="#9E9E9E" 
+                                                   FontSize="16"
+                                                   FontWeight="Bold"
+                                                   Text="{Binding Path=Date, Converter={StaticResource TimeConverter}}">
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel IsItemsHost="True" Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.2*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Center" Background="#495057">
+                    <TextBlock Text="Экран" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" Foreground="#212529"/>
+                </StackPanel>
+                <DockPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <local:DynamicDataGrid x:Name="DynamicGridView" DataContext="{Binding}"/>
+                </DockPanel>
+                <Image  Style="{StaticResource SizeChanging}" 
+                        Source="/Views/Images/expand-arrows.png" 
+                        HorizontalAlignment="Right" 
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        VerticalAlignment="Top"
+                        Margin="0,5,10,0" 
+                        Width="25" 
+                        Height="25">
+                    <Image.InputBindings>
+                        <MouseBinding Command="{Binding Path=ExpandCommand}"
+                                      MouseAction="LeftClick"/>
+                    </Image.InputBindings>
+                </Image>
+                <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                        <Rectangle Fill="#06d6a0" Width="25" Height="25" RadiusX="5" RadiusY="5"/>
+                        <TextBlock Foreground="#9E9E9E" 
+                                   FontSize="12"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"
+                                   Text="Выбрано">
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10">
+                        <Rectangle Fill="#212529" Width="25" Height="25" RadiusX="5" RadiusY="5"/>
+                        <TextBlock Foreground="#9E9E9E" 
+                                   FontSize="12"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"
+                                   Text="Занятые">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Foreground="#dee2e6" 
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Margin="20,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="{Binding Path=CurrentOrder.Sum, StringFormat='BYN{0}'}">
+                    </TextBlock>
+                </StackPanel>
+                <Button Style="{StaticResource DefaultButton}"
+                        Width="180"
+                        Height="40"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Grid.Column="1"
+                        Margin="0,0,20,0"
+                        Background="#02c39a"
+                        Foreground="#212529"
+                        Content="Продолжить"
+                        FontSize="18"
+                        Command="{Binding Path=BuyTicketsCommand}">
+                </Button>
+            </Grid>
+            
+        </Grid>
+    </Grid>
+</UserControl>

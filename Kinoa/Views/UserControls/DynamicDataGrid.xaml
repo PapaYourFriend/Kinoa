@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="Kinoa.Views.UserControls.DynamicDataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kinoa.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="CellTemplate">
+            <Border BorderBrush="Transparent"
+                    BorderThickness="1 0 1 0"
+                    DataContext="{Binding}" Width="50">
+                <local:CellControl DataContext="{Binding}"/>
+            </Border>
+        </DataTemplate>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Margin" Value="40,10"/>
+            <Setter Property="HeadersVisibility" Value="None"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="RowBackground" Value="Transparent"/>
+            <Setter Property="AlternatingRowBackground" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0, 1, 0, 0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="RowHeight" Value="50"/>
+            
+        </Style>
+
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{x:Null}" />
+                    <Setter Property="BorderBrush" Value="{x:Null}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type DataGridRow}">
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{x:Null}" />
+                    <Setter Property="BorderBrush" Value="{x:Null}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="MainGrid"
+          Background="Transparent">
+
+        <DockPanel>
+            <DataGrid
+                x:Name="DynamicGrid"
+                DataContext="{Binding}"
+                ItemsSource="{Binding Path=Cells}"
+                IsEnabled="True"
+                IsTabStop="False"
+                KeyboardNavigation.TabNavigation="None"
+                KeyboardNavigation.ControlTabNavigation="None">
+
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ItemsControl ItemsSource="{Binding}"
+                                          ItemTemplate="{DynamicResource CellTemplate}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </DockPanel>
+
+    </Grid>
+</UserControl>
