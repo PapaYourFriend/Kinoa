@@ -48,7 +48,7 @@ namespace Kinoa.ViewModel
                 Dates.Add(new DateModel { Date = dt });
                 if (SelectedDate is null)
                 {
-                    SelectedDate = Dates.First();
+                    _selectedDate = Dates.First();
                 }
             }
 
@@ -62,11 +62,6 @@ namespace Kinoa.ViewModel
                         SelectedRoom = item.FilmRoom;
                         CurrentOrder.Price = SelectedRoom.Price;
                     }
-                }
-                if (item.SessionDate.Date.Equals(SelectedDate.Date.Date) && SelectedRoom.FilmRoomId == item.FilmRoomId)
-                {
-                    SessionTimes.Add(new DateModel { Date = item.SessionStartTime, SessionId = item.MovieSessionId });
-                    SelectedSession = SessionTimes.First();
                 }
             }
         }
